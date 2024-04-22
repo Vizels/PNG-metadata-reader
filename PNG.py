@@ -30,4 +30,4 @@ class PNG:
             self.chunks.append(chunk)
             i += size + 12
         
-        print(self.chunks)
+        print("\n".join([str(chunk) for chunk in self.chunks]))
