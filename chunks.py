@@ -9,8 +9,8 @@ class Chunk:
         return f"Chunk: {self.name} Size: {self.size} CRC: {self.crc}\n"
 
     def __repr__(self):
-        return f"Chunk: {self.name} Size: {self.size} CRC: {self.crc}\n"
-    
+        return self.__str__()
+
 class IHDR(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
@@ -26,4 +26,4 @@ class IHDR(Chunk):
         return f"IHDR Chunk\nWidth: {self.width}\nHeight: {self.height}\nBit Depth: {self.bit_depth}\nColor Type: {self.color_type}\nCompression Method: {self.compression_method}\nFilter Method: {self.filter_method}\nInterlace Method: {self.interlace_method}\n"
 
     def __repr__(self):
-        return f"IHDR Chunk\nWidth: {self.width}\nHeight: {self.height}\nBit Depth: {self.bit_depth}\nColor Type: {self.color_type}\nCompression Method: {self.compression_method}\nFilter Method: {self.filter_method}\nInterlace Method: {self.interlace_method}\n"
+        return self.__str__()
