@@ -27,3 +27,16 @@ class IHDR(Chunk):
 
     def __repr__(self):
         return self.__str__()
+
+
+class tEXt(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.keyword = data[:data.index(0)].decode("utf-8")
+        self.value = data[data.index(0)+1:].decode("utf-8")
+
+    def __str__(self):
+        return f"{self.keyword} : {self.value}"
+
+    def __repr__(self):
+        return self.__str__()

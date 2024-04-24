@@ -24,10 +24,18 @@ class PNG:
             
             if name == "IHDR":
                 chunk = chunks.IHDR(name, size, chunk_data, crc)
+            elif name == "tEXt":
+                chunk = chunks.tEXt(name, size, chunk_data, crc)
             else:
                 chunk = chunks.Chunk(name, size, chunk_data, crc)
             
             self.chunks.append(chunk)
             i += size + 12
         
-        print("\n".join([str(chunk) for chunk in self.chunks]))
+        prev = ""
+        for chunk in self.chunks:
+            if prev != chunk.name:
+                prev = chunk.name
+                print(prev)
+                print("======================")
+            print(chunk)
