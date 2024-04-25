@@ -26,6 +26,8 @@ class PNG:
                 chunk = chunks.IHDR(name, size, chunk_data, crc)
             elif name == "tEXt":
                 chunk = chunks.tEXt(name, size, chunk_data, crc)
+                if chunk.keyword.startswith("exif:"):
+                    chunk = chunks.eXIf("eXIf", size, chunk_data, crc)
             else:
                 chunk = chunks.Chunk(name, size, chunk_data, crc)
             
