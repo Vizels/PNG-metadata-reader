@@ -1,3 +1,3 @@
 from PNG import PNG
 
-test = PNG("image5.png")
+test = PNG("image6.png")

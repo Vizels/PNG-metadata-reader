@@ -22,14 +22,19 @@ class PNG:
             chunk_data = data[i+8:i+8+size]
             crc = data[i+8+size:i+12+size]
             
-            if name == "IHDR":
-                chunk = chunks.IHDR(name, size, chunk_data, crc)
-            elif name == "tEXt":
-                chunk = chunks.tEXt(name, size, chunk_data, crc)
-                if chunk.keyword.startswith("exif:"):
-                    chunk = chunks.eXIf("eXIf", size, chunk_data, crc)
-            else:
-                chunk = chunks.Chunk(name, size, chunk_data, crc)
+            match name:
+                case "IHDR":
+                    chunk = chunks.IHDR(name, size, chunk_data, crc)
+                case "PLTE":
+                    chunk = chunks.PLTE(name, size, chunk_data, crc)
+                case "tEXt":
+                    chunk = chunks.tEXt(name, size, chunk_data, crc)
+                    if chunk.keyword.startswith("exif:"):
+                        chunk = chunks.eXIf("eXIf", size, chunk_data, crc)
+                case "sRGB":
+                    chunk = chunks.sRGB(name, size, chunk_data, crc)
+                case other:
+                    chunk = chunks.Chunk(name, size, chunk_data, crc)
             
             self.chunks.append(chunk)
             i += size + 12
@@ -38,6 +43,7 @@ class PNG:
         for chunk in self.chunks:
             if prev != chunk.name:
                 prev = chunk.name
+                print("======================")
                 print(prev)
                 print("======================")
             print(chunk)

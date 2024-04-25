@@ -52,3 +52,27 @@ class eXIf(Chunk):
 
     def __repr__(self):
         return self.__str__()
+
+
+class PLTE(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.palette = [(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)]
+
+    def __str__(self):
+        return f"Palette: {self.palette}"
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class sRGB(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.rendering_intent = data[0]
+
+    def __str__(self):
+        return f"Rendering Intent: {self.rendering_intent}"
+
+    def __repr__(self):
+        return self.__str__()
