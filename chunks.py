@@ -60,6 +60,18 @@ class PLTE(Chunk):
         self.palette = [(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)]
 
     def __str__(self):
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots()
+        colors = self.palette
+        for i, color in enumerate(colors):
+            rect = plt.Rectangle((i, 0), 1, 1, color=[x/255 for x in color])
+            ax.add_patch(rect)
+        ax.set_xlim(0, len(colors))
+        ax.set_ylim(0, 1)
+        ax.set_aspect('equal')
+        ax.axis('off')
+        plt.title("Palette colors")
+        plt.show()
         return f"Palette: {self.palette}"
 
     def __repr__(self):
