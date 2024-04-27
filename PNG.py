@@ -11,8 +11,8 @@ class PNG:
     def parse(self):
         with open(self.file, "rb") as image:
             data = bytearray(image.read())
-        header = data[self.HEADER_START:self.HEADER_END]
-        print(header)
+        self.header = data[self.HEADER_START:self.HEADER_END]
+        print(self.header)
 
         i = self.HEADER_END
 
@@ -47,3 +47,21 @@ class PNG:
                 print(prev)
                 print("======================")
             print(chunk)
+
+    def isChunkCritical(self, chunk):
+        return chunk.name[0].isupper()
+
+    def anonimizeFile(self):
+        self.chunks = [chunk for chunk in self.chunks if self.isChunkCritical(chunk)]
+
+    def saveFile(self, filename, anonimize=False):
+        with open(filename, "wb") as image:
+            image.write(self.header)
+            for chunk in self.chunks:
+                if anonimize and not self.isChunkCritical(chunk):
+                    continue
+                image.write(chunk.size.to_bytes(4, byteorder="big"))
+                image.write(chunk.name.encode("utf-8"))
+                image.write(chunk.data)
+                image.write(chunk.crc)
+        
