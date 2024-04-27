@@ -6,7 +6,7 @@ class Chunk:
         self.crc = crc
 
     def __str__(self):
-        return f"Chunk: {self.name} Size: {self.size} CRC: {int.from_bytes(self.crc)}"
+        return f"Chunk: {self.name} Size: {self.size} CRC: {int.from_bytes(self.crc, byteorder='big')}"
 
     def __repr__(self):
         return self.__str__()
