@@ -57,29 +57,11 @@ class eXIf(Chunk):
 class PLTE(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
-        self.palette = [(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)]
+        self.palette = sorted([(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)])
+        
 
     def __str__(self):
-        import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(figsize=(10, 10))
-        colors = self.palette
-        num_cols = int(len(colors) ** 0.5) + 1
-        num_rows = int(len(colors) / num_cols) + 1
-        for i, color in enumerate(colors):
-            col = i % num_cols
-            row = i // num_cols
-            rect = plt.Rectangle((col, row), 1, 1, color=[x/255 for x in color])
-            ax.add_patch(rect)
-            # Determine contrast color based on background
-            contrast_color = 'white' if sum(color) / 3 < 128 else 'black'
-            ax.text(col + 0.5, row + 0.5, f"{color}", ha='center', va='center', color=contrast_color)
-        ax.set_xlim(0, num_cols)
-        ax.set_ylim(0, num_rows)
-        ax.set_aspect('equal')
-        ax.axis('off')
-        plt.title("Palette colors")
-        plt.show()
-        return f"Palette: {self.palette}"
+        return f"Number of colors: {len(self.palette)}\nPalette: {self.palette}"
 
     def __repr__(self):
         return self.__str__()
