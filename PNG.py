@@ -12,11 +12,20 @@ class PNG:
         self.HEADER_END = 8
         self.parse()
 
+    def printData(self):
+        prev = ""
+        for chunk in self.chunks:
+            if prev != chunk.name:
+                prev = chunk.name
+                print("======================")
+                print(prev)
+                print("======================")
+            print(chunk)
+
     def parse(self):
         with open(self.file, "rb") as image:
             data = bytearray(image.read())
         self.header = data[self.HEADER_START:self.HEADER_END]
-        print(self.header)
 
         i = self.HEADER_END
 
@@ -42,15 +51,6 @@ class PNG:
             
             self.chunks.append(chunk)
             i += size + 12
-        
-        prev = ""
-        for chunk in self.chunks:
-            if prev != chunk.name:
-                prev = chunk.name
-                print("======================")
-                print(prev)
-                print("======================")
-            print(chunk)
 
     def isChunkCritical(self, chunk):
         return chunk.name[0].isupper()
