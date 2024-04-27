@@ -1,4 +1,7 @@
 import zlib
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 import chunks
 
 class PNG:
@@ -75,3 +78,42 @@ class PNG:
         merged_chunk = chunks.Chunk("IDAT", len(data), data, new_crc.to_bytes(4, byteorder="big"))
         self.chunks = [chunk for chunk in self.chunks if chunk.name != "IDAT"]
         self.chunks.insert(-1, merged_chunk)
+
+    def showPLTE(self):
+        for chunk in self.chunks:
+            if chunk.name == "PLTE":
+                fig, ax = plt.subplots(figsize=(12, 12))
+                colors = chunk.palette
+                num_cols = int(len(colors) ** 0.5) + 1
+                num_rows = int(len(colors) / num_cols) + 1
+                for i, color in enumerate(colors):
+                    col = i % num_cols
+                    row = i // num_cols
+                    rect = plt.Rectangle((col, row), 1, 1, color=[x/255 for x in color])
+                    ax.add_patch(rect)
+                    # Determine contrast color based on background
+                    contrast_color = 'white' if sum(color) / 3 < 128 else 'black'
+                    ax.text(col + 0.5, row + 0.5, f"{color}", ha='center', va='center', color=contrast_color)
+                ax.set_xlim(0, num_cols)
+                ax.set_ylim(0, num_rows)
+                ax.set_aspect('equal')
+                ax.axis('off')
+                plt.title("Palette colors")
+                plt.show()
+
+    def fourierTransform(self):
+        image = cv2.imread(self.file, cv2.IMREAD_GRAYSCALE)
+        # Step 2: Perform Fourier Transform
+        f_transform = np.fft.fft2(image)
+
+        # Step 3: Shift the zero frequency component
+        f_transform_shifted = np.fft.fftshift(f_transform)
+
+        # Step 4: Visualize the spectrum (optional)
+        spectrum_magnitude = np.abs(f_transform_shifted)
+        spectrum_log = np.log(spectrum_magnitude + 1)  # Apply log for better visualization
+
+        plt.imshow(spectrum_log, cmap='gray')
+        plt.title('Fourier Spectrum')
+        plt.colorbar()
+        plt.show()
