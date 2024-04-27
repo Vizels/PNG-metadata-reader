@@ -61,13 +61,20 @@ class PLTE(Chunk):
 
     def __str__(self):
         import matplotlib.pyplot as plt
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(10, 10))
         colors = self.palette
+        num_cols = int(len(colors) ** 0.5) + 1
+        num_rows = int(len(colors) / num_cols) + 1
         for i, color in enumerate(colors):
-            rect = plt.Rectangle((i, 0), 1, 1, color=[x/255 for x in color])
+            col = i % num_cols
+            row = i // num_cols
+            rect = plt.Rectangle((col, row), 1, 1, color=[x/255 for x in color])
             ax.add_patch(rect)
-        ax.set_xlim(0, len(colors))
-        ax.set_ylim(0, 1)
+            # Determine contrast color based on background
+            contrast_color = 'white' if sum(color) / 3 < 128 else 'black'
+            ax.text(col + 0.5, row + 0.5, f"{color}", ha='center', va='center', color=contrast_color)
+        ax.set_xlim(0, num_cols)
+        ax.set_ylim(0, num_rows)
         ax.set_aspect('equal')
         ax.axis('off')
         plt.title("Palette colors")
