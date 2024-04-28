@@ -42,6 +42,18 @@ class tEXt(Chunk):
     def __repr__(self):
         return self.__str__()
 
+class zTXt(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.keyword = data[:data.index(0)].decode("utf-8")
+        self.compression_method = data[data.index(0)+1]
+        self.value = data[data.index(0)+2:]
+
+    def __str__(self):
+        return f"- Keyword: {self.keyword}\n- Compression method:  {self.compression_method}\n- Value length: {len(self.value)} bytes"
+
+    def __repr__(self):
+        return self.__str__()
 
 class PLTE(Chunk):
     def __init__(self, name, size, data, crc):

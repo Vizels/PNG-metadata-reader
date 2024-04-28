@@ -44,6 +44,8 @@ class PNG:
                     chunk = chunks.PLTE(name, size, chunk_data, crc)
                 case "tEXt":
                     chunk = chunks.tEXt(name, size, chunk_data, crc)
+                case "zTXt":
+                    chunk = chunks.zTXt(name, size, chunk_data, crc)
                 case "sRGB":
                     chunk = chunks.sRGB(name, size, chunk_data, crc)
                 case "tRNS":
