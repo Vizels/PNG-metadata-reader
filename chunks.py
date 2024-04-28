@@ -1,5 +1,3 @@
-import colorsys
-
 class Chunk:
     def __init__(self, name, size, data, crc):
         self.name = name
@@ -59,7 +57,7 @@ class eXIf(Chunk):
 class PLTE(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
-        self.palette = sorted([(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)], key=lambda x: colorsys.rgb_to_hls(*x))
+        self.palette = [(int(data[i:i+3][0]), int(data[i:i+3][1]), int(data[i:i+3][2])) for i in range(0, len(data), 3)]
         
 
     def __str__(self):

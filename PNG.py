@@ -1,6 +1,7 @@
 import zlib
 import cv2
 import math
+import colorsys
 import numpy as np
 import matplotlib.pyplot as plt
 import chunks
@@ -86,6 +87,7 @@ class PNG:
             if chunk.name == "PLTE":
                 colors.extend(chunk.palette)
 
+        colors = sorted([color for color in colors], key=lambda x: colorsys.rgb_to_hls(*x))
         # Convert colors to RGB values
         rgb_colors = [[x/255 for x in color] for color in colors]
 
