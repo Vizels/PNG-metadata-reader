@@ -48,6 +48,8 @@ class PNG:
                         chunk = chunks.eXIf("eXIf", size, chunk_data, crc)
                 case "sRGB":
                     chunk = chunks.sRGB(name, size, chunk_data, crc)
+                case "tRNS":
+                    chunk = chunks.tRNS(name, size, chunk_data, crc)
                 case other:
                     chunk = chunks.Chunk(name, size, chunk_data, crc)
             
