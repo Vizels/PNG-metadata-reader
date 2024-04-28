@@ -79,7 +79,7 @@ class PNG:
                 image.write(chunk.data)
                 image.write(chunk.crc)
     
-    def mergeIDAT(self):
+    def merge_IDAT(self):
         data = bytearray()
         for chunk in self.chunks:
             if chunk.name == "IDAT":
