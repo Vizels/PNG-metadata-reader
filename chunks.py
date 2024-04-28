@@ -1,4 +1,5 @@
 import datetime
+import zlib
 
 class Chunk:
     def __init__(self, name, size, data, crc):
@@ -50,7 +51,7 @@ class zTXt(Chunk):
         self.value = data[data.index(0)+2:]
 
     def __str__(self):
-        return f"- Keyword: {self.keyword}\n- Compression method:  {self.compression_method}\n- Value length: {len(self.value)} bytes"
+        return f"- Keyword: {self.keyword}\n- Compression method:  {self.compression_method}\n- Value length: {len(self.value)} bytes\n- Value: {zlib.decompress(self.value).decode('utf-8').replace('\n', ' ')}"
 
     def __repr__(self):
         return self.__str__()
