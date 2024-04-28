@@ -72,11 +72,11 @@ class PNG:
                 image.write(chunk.crc)
     
     def mergeIDAT(self):
-        data = bytearray([])
+        data = bytearray()
         for chunk in self.chunks:
             if chunk.name == "IDAT":
                 data += chunk.data
-        new_crc = zlib.crc32(data)
+        new_crc = zlib.crc32("IDAT".encode()+data)
         merged_chunk = chunks.Chunk("IDAT", len(data), data, new_crc.to_bytes(4, byteorder="big"))
         self.chunks = [chunk for chunk in self.chunks if chunk.name != "IDAT"]
         self.chunks.insert(-1, merged_chunk)

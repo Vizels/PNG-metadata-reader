@@ -1,7 +1,8 @@
 from PNG import PNG
 
-test = PNG("images/image8.png")
+test = PNG("images/test.png")
 test.mergeIDAT()
 test.printData()
-test.showPLTE()
-test.fourierTransform()   
+# test.showPLTE()
+# test.fourierTransform()
+test.saveFile("images/test.png")   
