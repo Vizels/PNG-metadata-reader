@@ -1,5 +1,6 @@
 import zlib
 import cv2
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 import chunks
@@ -80,26 +81,43 @@ class PNG:
         self.chunks.insert(-1, merged_chunk)
 
     def showPLTE(self):
+        colors = []
         for chunk in self.chunks:
             if chunk.name == "PLTE":
-                fig, ax = plt.subplots(figsize=(12, 12))
-                colors = chunk.palette
-                num_cols = int(len(colors) ** 0.5) + 1
-                num_rows = int(len(colors) / num_cols) + 1
-                for i, color in enumerate(colors):
-                    col = i % num_cols
-                    row = i // num_cols
-                    rect = plt.Rectangle((col, row), 1, 1, color=[x/255 for x in color])
-                    ax.add_patch(rect)
-                    # Determine contrast color based on background
-                    contrast_color = 'white' if sum(color) / 3 < 128 else 'black'
-                    ax.text(col + 0.5, row + 0.5, f"{color}", ha='center', va='center', color=contrast_color)
-                ax.set_xlim(0, num_cols)
-                ax.set_ylim(0, num_rows)
-                ax.set_aspect('equal')
-                ax.axis('off')
-                plt.title("Palette colors")
-                plt.show()
+                colors.extend(chunk.palette)
+
+        # Convert colors to RGB values
+        rgb_colors = [[x/255 for x in color] for color in colors]
+
+
+        labels = [f"{color}" for color in colors]
+
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 12))
+
+        # Plot the 'spectrum' bar plot
+        ax1.bar(labels, height=1, color=rgb_colors, width=1)
+        ax1.set_title("Palette colors")
+        ax1.set_xticks([])
+        ax1.set_yticks([])
+
+        # Plot the 'rectangles' grid of colors
+        num_cols = math.ceil(len(colors) ** 0.5)
+        num_rows = math.ceil(len(colors) / num_cols)
+        for i in range(len(colors)):
+            col = i % num_cols
+            row = i // num_cols
+            rect = plt.Rectangle((col, row), 1, 1, color=rgb_colors[i])
+            ax2.add_patch(rect)
+            # Determine contrast color based on background
+            # contrast_color = 'white' if sum(color) / 3 < 128 else 'black'
+            # ax2.text(col + 0.5, row + 0.5, f"{color}", ha='center', va='center', color=contrast_color, fontsize=8)
+        ax2.set_xlim(0, num_cols)
+        ax2.set_ylim(0, num_rows)
+        ax2.set_aspect('equal')
+        ax2.axis('off')
+
+        plt.tight_layout()
+        plt.show()
 
     def fourierTransform(self):
         image = cv2.imread(self.file, cv2.IMREAD_GRAYSCALE)
