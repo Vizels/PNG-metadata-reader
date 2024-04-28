@@ -34,9 +34,9 @@ class IHDR(Chunk):
 class tEXt(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
-        self.data = [value.decode("utf-8") for value in data.split(b'\x00')]
-        self.keywords = [self.data[i] for i in range(0, len(self.data), 2)]
-        self.values = [self.data[i] for i in range(1, len(self.data), 2)]
+        self.data_str = [value.decode("utf-8") for value in data.split(b'\x00') if value != b""]
+        self.keywords = [self.data_str[i] for i in range(0, len(self.data_str), 2)]
+        self.values = [self.data_str[i] for i in range(1, len(self.data_str), 2)]
 
     def __str__(self):
         output = ""
