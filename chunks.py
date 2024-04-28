@@ -1,3 +1,5 @@
+import datetime
+
 class Chunk:
     def __init__(self, name, size, data, crc):
         self.name = name
@@ -113,6 +115,23 @@ class pHYs(Chunk):
         ppu_Y = f"Pixels per unit, Y axis: {self.pixels_per_unit_y}"
         unit_spec = f"Unit Specifier: {self.unit_specifier}"
         return f"{ppu_X}\n{ppu_Y}\n{unit_spec}{' (meter)' if self.unit_specifier == 1 else '( unknown)'}"
+
+    def __repr__(self):
+        return self.__str__()
+
+class tIME(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.year = int.from_bytes(data[0:2], byteorder="big")
+        self.month = int.from_bytes(data[2:3], byteorder="big")
+        self.day = int.from_bytes(data[3:4], byteorder="big")
+        self.hour = int.from_bytes(data[4:5], byteorder="big")
+        self.minute = int.from_bytes(data[5:6], byteorder="big")
+        self.second = int.from_bytes(data[6:7], byteorder="big")
+        self.date = datetime.datetime(self.year, self.month, self.day, self.hour, self.minute, self.second)
+
+    def __str__(self):
+        return f"{self.date}"
 
     def __repr__(self):
         return self.__str__()
