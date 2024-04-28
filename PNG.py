@@ -107,7 +107,7 @@ class PNG:
         num_rows = math.ceil(len(colors) / num_cols)
         for i in range(len(colors)):
             col = i % num_cols
-            row = i // num_cols
+            row = num_rows - i // num_cols
             rect = plt.Rectangle((col, row), 1, 1, color=rgb_colors[i])
             ax2.add_patch(rect)
             # Determine contrast color based on background
