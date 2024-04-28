@@ -123,17 +123,23 @@ class PNG:
 
     def fourierTransform(self):
         image = cv2.imread(self.file, cv2.IMREAD_GRAYSCALE)
-        # Step 2: Perform Fourier Transform
         f_transform = np.fft.fft2(image)
-
-        # Step 3: Shift the zero frequency component
         f_transform_shifted = np.fft.fftshift(f_transform)
-
-        # Step 4: Visualize the spectrum (optional)
         spectrum_magnitude = np.abs(f_transform_shifted)
-        spectrum_log = np.log(spectrum_magnitude + 1)  # Apply log for better visualization
+        spectrum_log = np.log(spectrum_magnitude + 1)
 
-        plt.imshow(spectrum_log, cmap='gray')
-        plt.title('Fourier Spectrum')
-        plt.colorbar()
+        inverse_transform = np.fft.ifft2(f_transform).real
+
+        # Plot the results
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12, 6))
+        ax1.imshow(image, cmap='gray')
+        ax1.set_title('Original Image')
+        ax1.axis('off')
+        ax2.imshow(spectrum_log, cmap='gray')
+        ax2.set_title('Fourier Spectrum')
+        ax2.axis('off')
+        ax3.imshow(inverse_transform, cmap='gray')
+        ax3.set_title('Inverse Transform')
+        ax3.axis('off')
+        plt.tight_layout()
         plt.show()
