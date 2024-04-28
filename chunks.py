@@ -71,9 +71,10 @@ class sRGB(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
         self.rendering_intent = data[0]
+        self.VALUES = ["Perceptual", "Relative Colorimetric", "Saturation", "Absolute Colorimetric"]
 
     def __str__(self):
-        return f"Rendering Intent: {self.rendering_intent}"
+        return f"Rendering Intent: {self.rendering_intent} ({ self.VALUES[self.rendering_intent] if self.rendering_intent < 4 else ''})"
 
     def __repr__(self):
         return self.__str__()
