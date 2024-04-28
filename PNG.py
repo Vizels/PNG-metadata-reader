@@ -88,6 +88,21 @@ class PNG:
         merged_chunk = chunks.Chunk("IDAT", len(data), data, new_crc.to_bytes(4, byteorder="big"))
         self.chunks = [chunk for chunk in self.chunks if chunk.name != "IDAT"]
         self.chunks.insert(-1, merged_chunk)
+        
+    def merge_tEXt(self):
+        data = bytearray()
+        insertion_index = None
+        for chunk in self.chunks:
+            if chunk.name == "tEXt":
+                data += chunk.data+b'\x00'
+                if insertion_index is None:
+                    insertion_index = self.chunks.index(chunk)
+        if insertion_index is None:
+            return
+        new_crc = zlib.crc32("tEXt".encode()+data)
+        merged_chunk = chunks.tEXt("tEXt", len(data), data, new_crc.to_bytes(4, byteorder="big"))
+        self.chunks = [chunk for chunk in self.chunks if chunk.name != "tEXt"]
+        self.chunks.insert(insertion_index, merged_chunk)
 
     def showPLTE(self):
         colors = []
