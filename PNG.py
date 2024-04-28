@@ -86,12 +86,17 @@ class PNG:
 
     def merge_IDAT(self):
         data = bytearray()
+        insertion_index = None
         for chunk in self.chunks:
             if chunk.name == "IDAT":
                 data += chunk.data
+                if insertion_index is None:
+                    insertion_index = self.chunks.index(chunk)
+        if insertion_index is None:
+            return
         merged_chunk = chunks.Chunk("IDAT", len(data), data, self._calculateCRC("IDAT", data))
         self.chunks = [chunk for chunk in self.chunks if chunk.name != "IDAT"]
-        self.chunks.insert(-1, merged_chunk)
+        self.chunks.insert(insertion_index, merged_chunk)
         
     def merge_tEXt(self):
         data = bytearray()
