@@ -56,6 +56,8 @@ class PNG:
                     chunk = chunks.pHYs(name, size, chunk_data, crc)
                 case "tIME":
                     chunk = chunks.tIME(name, size, chunk_data, crc)
+                case "bKGD":
+                    chunk = chunks.bKGD(name, size, chunk_data, crc)
                 case other:
                     chunk = chunks.Chunk(name, size, chunk_data, crc)
             

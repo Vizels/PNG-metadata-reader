@@ -135,3 +135,30 @@ class tIME(Chunk):
 
     def __repr__(self):
         return self.__str__()
+
+class bKGD(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.value_label = ""
+        if len(data) == 6:
+            self.background = (int.from_bytes(data[0:2], byteorder="big"),
+                               int.from_bytes(data[2:4], byteorder="big"),
+                               int.from_bytes(data[4:6], byteorder="big"))
+            self.value_label = "RGB"
+        elif len(data) == 2:
+            self.background = int.from_bytes(data[:], byteorder="big")
+            self.value_label = "Gray"
+        elif len(data) == 1:
+            self.background = int.from_bytes(data[:], byteorder="big")
+            self.value_label = "Palette Index"
+
+    def __str__(self):
+        if self.value_label == "RGB":
+            return f"Background: {self.background} (R, G, B)"
+        elif self.value_label == "Gray":
+            return f"Background: {self.background} (Gray)"
+        elif self.value_label == "Palette Index":
+            return f"Background: {self.background} (Palette Index)"
+
+    def __repr__(self):
+        return self.__str__()
