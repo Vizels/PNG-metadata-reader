@@ -88,3 +88,30 @@ class tRNS(Chunk):
 
     def __repr__(self):
         return self.__str__()
+
+class gAMA(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.gamma = int.from_bytes(data, byteorder="big")/100000
+
+    def __str__(self):
+        return f"Gamma: {self.gamma}"
+
+    def __repr__(self):
+        return self.__str__()
+
+class pHYs(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.pixels_per_unit_x = int.from_bytes(data[0:4], byteorder="big")
+        self.pixels_per_unit_y = int.from_bytes(data[4:8], byteorder="big")
+        self.unit_specifier = data[8]
+
+    def __str__(self):
+        ppu_X = f"Pixels per unit, X axis: {self.pixels_per_unit_x}"
+        ppu_Y = f"Pixels per unit, Y axis: {self.pixels_per_unit_y}"
+        unit_spec = f"Unit Specifier: {self.unit_specifier}"
+        return f"{ppu_X}\n{ppu_Y}\n{unit_spec}{' (meter)' if self.unit_specifier == 1 else '( unknown)'}"
+
+    def __repr__(self):
+        return self.__str__()

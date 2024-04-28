@@ -50,6 +50,10 @@ class PNG:
                     chunk = chunks.sRGB(name, size, chunk_data, crc)
                 case "tRNS":
                     chunk = chunks.tRNS(name, size, chunk_data, crc)
+                case "gAMA":
+                    chunk = chunks.gAMA(name, size, chunk_data, crc)
+                case "pHYs":
+                    chunk = chunks.pHYs(name, size, chunk_data, crc)
                 case other:
                     chunk = chunks.Chunk(name, size, chunk_data, crc)
             
