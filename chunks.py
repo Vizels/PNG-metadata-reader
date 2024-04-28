@@ -25,7 +25,7 @@ class IHDR(Chunk):
         self.interlace_method = data[12]
 
     def __str__(self):
-        return f"Width: {self.width}\nHeight: {self.height}\nBit Depth: {self.bit_depth}\nColor Type: {self.color_type}\nCompression Method: {self.compression_method}\nFilter Method: {self.filter_method}\nInterlace Method: {self.interlace_method}"
+        return f"- Width: {self.width}\n- Height: {self.height}\n- Bit Depth: {self.bit_depth}\n- Color Type: {self.color_type}\n- Compression Method: {self.compression_method}\n- Filter Method: {self.filter_method}\n- Interlace Method: {self.interlace_method}"
 
     def __repr__(self):
         return self.__str__()
@@ -37,7 +37,7 @@ class tEXt(Chunk):
         self.keyword = data[:data.index(0)].decode("utf-8")
         self.value = data[data.index(0)+1:].decode("utf-8")
     def __str__(self):
-        return f"{self.keyword} : {self.value}"
+        return f"- {self.keyword} : {self.value}"
 
     def __repr__(self):
         return self.__str__()
@@ -62,7 +62,7 @@ class PLTE(Chunk):
         
 
     def __str__(self):
-        return f"Number of colors: {len(self.palette)}\nPalette: {self.palette}"
+        return f"- Number of colors: {len(self.palette)}\n- Palette: {self.palette}"
 
     def __repr__(self):
         return self.__str__()
@@ -75,7 +75,7 @@ class sRGB(Chunk):
         self.VALUES = ["Perceptual", "Relative Colorimetric", "Saturation", "Absolute Colorimetric"]
 
     def __str__(self):
-        return f"Rendering Intent: {self.rendering_intent} ({ self.VALUES[self.rendering_intent] if self.rendering_intent < 4 else ''})"
+        return f"- Rendering Intent: {self.rendering_intent} ({ self.VALUES[self.rendering_intent] if self.rendering_intent < 4 else ''})"
 
     def __repr__(self):
         return self.__str__()
@@ -86,7 +86,7 @@ class tRNS(Chunk):
         self.transparency = [int(value) for value in data]
 
     def __str__(self):
-        return f"Transparency: {self.transparency}"
+        return f"- Transparency: {self.transparency}"
 
     def __repr__(self):
         return self.__str__()
@@ -97,7 +97,7 @@ class gAMA(Chunk):
         self.gamma = int.from_bytes(data, byteorder="big")/100000
 
     def __str__(self):
-        return f"Gamma: {self.gamma}"
+        return f"- Gamma: {self.gamma}"
 
     def __repr__(self):
         return self.__str__()
@@ -110,9 +110,9 @@ class pHYs(Chunk):
         self.unit_specifier = data[8]
 
     def __str__(self):
-        ppu_X = f"Pixels per unit, X axis: {self.pixels_per_unit_x}"
-        ppu_Y = f"Pixels per unit, Y axis: {self.pixels_per_unit_y}"
-        unit_spec = f"Unit Specifier: {self.unit_specifier}"
+        ppu_X = f"- Pixels per unit, X axis: {self.pixels_per_unit_x}"
+        ppu_Y = f"- Pixels per unit, Y axis: {self.pixels_per_unit_y}"
+        unit_spec = f"- Unit Specifier: {self.unit_specifier}"
         return f"{ppu_X}\n{ppu_Y}\n{unit_spec}{' (meter)' if self.unit_specifier == 1 else '( unknown)'}"
 
     def __repr__(self):
@@ -130,7 +130,7 @@ class tIME(Chunk):
         self.date = datetime.datetime(self.year, self.month, self.day, self.hour, self.minute, self.second)
 
     def __str__(self):
-        return f"Last changed: {self.date}"
+        return f"- Last changed: {self.date}"
 
     def __repr__(self):
         return self.__str__()
@@ -153,11 +153,11 @@ class bKGD(Chunk):
 
     def __str__(self):
         if self.value_label == "RGB":
-            return f"Background: {self.background} (R, G, B)"
+            return f"- Background: {self.background} (R, G, B)"
         elif self.value_label == "Gray":
-            return f"Background: {self.background} (Gray)"
+            return f"- Background: {self.background} (Gray)"
         elif self.value_label == "Palette Index":
-            return f"Background: {self.background} (Palette Index)"
+            return f"- Background: {self.background} (Palette Index)"
 
     def __repr__(self):
         return self.__str__()
