@@ -34,11 +34,15 @@ class IHDR(Chunk):
 class tEXt(Chunk):
     def __init__(self, name, size, data, crc):
         super().__init__(name, size, data, crc)
-        self.keyword = data[:data.index(0)].decode("utf-8")
-        self.value = data[data.index(0)+1:].decode("utf-8")
+        self.data = [value.decode("utf-8") for value in data.split(b'\x00')]
+        self.keywords = [self.data[i] for i in range(0, len(self.data), 2)]
+        self.values = [self.data[i] for i in range(1, len(self.data), 2)]
 
     def __str__(self):
-        return f"{self.keyword} : {self.value}"
+        output = ""
+        for i in range(len(self.keywords)):
+            output += f"{self.keywords[i]} : {self.values[i]}\n"
+        return f"{output}"
 
     def __repr__(self):
         return self.__str__()
