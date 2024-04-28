@@ -99,12 +99,13 @@ class PNG:
         self.chunks = [chunk for chunk in self.chunks if chunk.name != "IDAT"]
         self.chunks.insert(insertion_index, merged_chunk)
         
-    def showPLTE(self):
+    def show_PLTE(self):
         colors = []
         for chunk in self.chunks:
             if chunk.name == "PLTE":
                 colors.extend(chunk.palette)
-
+        if not colors:
+            return
         colors = sorted([color for color in colors], key=lambda x: colorsys.rgb_to_hls(*x))
         # Convert colors to RGB values
         rgb_colors = [[x/255 for x in color] for color in colors]
