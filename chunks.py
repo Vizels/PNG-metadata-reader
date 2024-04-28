@@ -123,7 +123,7 @@ class tIME(Chunk):
         self.date = datetime.datetime(self.year, self.month, self.day, self.hour, self.minute, self.second)
 
     def __str__(self):
-        return f"{self.date}"
+        return f"Last changed: {self.date}"
 
     def __repr__(self):
         return self.__str__()
