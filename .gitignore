@@ -6,6 +6,10 @@ test.py
 .python-version
 # C extensions
 *.so
+Pipfile
+Pipfile.lock
+image0.png
+test0.png
 
 # Distribution / packaging
 .Python
