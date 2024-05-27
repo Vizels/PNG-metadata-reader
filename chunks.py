@@ -174,7 +174,7 @@ class iTXt(Chunk):
         self.text = data[data.index(0)+3+data[data.index(0)+3:].index(0)+1+data[data.index(0)+3+data[data.index(0)+3:].index(0)+1:].index(0)+1:].decode("utf-8")
 
     def __str__(self):
-        return f"- Keyword: {self.keyword}\n- Compression flag: {self.compression_flag}\n- Compression method: {self.compression_method}\n- Language tag: {self.language_tag}\n- Translated keyword: {self.translated_keyword}\n- Text: {self.text}"
+        return f"- Keyword: {self.keyword}\n- Compression flag: {self.compression_flag}\n- Compression method: {self.compression_method}\n- Language tag: {self.language_tag}\n- Translated keyword: {self.translated_keyword}\n- Text: \n{self.text}"
 
     def __repr__(self):
         return self.__str__()
