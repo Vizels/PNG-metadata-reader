@@ -1,4 +1,4 @@
-from PNG import PNG
+from png.PNG import PNG
 
 test = PNG("images/image6.png")
 test.merge_IDAT()

@@ -4,7 +4,7 @@ import math
 import colorsys
 import numpy as np
 import matplotlib.pyplot as plt
-import chunks
+from png import chunks
 
 class PNG:
     def __init__(self, file):
