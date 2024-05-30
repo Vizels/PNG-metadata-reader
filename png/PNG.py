@@ -4,7 +4,7 @@ import math
 import colorsys
 import numpy as np
 import matplotlib.pyplot as plt
-import chunks
+from png import chunks
 
 class PNG:
     def __init__(self, file):
@@ -58,6 +58,8 @@ class PNG:
                     chunk = chunks.tIME(name, size, chunk_data, crc)
                 case "bKGD":
                     chunk = chunks.bKGD(name, size, chunk_data, crc)
+                case "iTXt":
+                    chunk = chunks.iTXt(name, size, chunk_data, crc)
                 case other:
                     chunk = chunks.Chunk(name, size, chunk_data, crc)
             
@@ -167,7 +169,7 @@ class PNG:
         ax5.imshow(phase.real, cmap='gray')
         ax5.set_title('Fourier Spectrum Phase')
         ax5.axis('off')
-        ax6.imshow(spectrum_log, cmap='gray')
+        ax6.imshow(20*spectrum_log, cmap='gray')
         ax6.set_title('Fourier Spectrum Log Scale')
         ax6.axis('off')
         plt.tight_layout()

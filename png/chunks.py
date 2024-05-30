@@ -162,3 +162,19 @@ class bKGD(Chunk):
 
     def __repr__(self):
         return self.__str__()
+
+class iTXt(Chunk):
+    def __init__(self, name, size, data, crc):
+        super().__init__(name, size, data, crc)
+        self.keyword = data[:data.index(0)].decode("utf-8")
+        self.compression_flag = data[data.index(0)+1]
+        self.compression_method = data[data.index(0)+2]
+        self.language_tag = data[data.index(0)+3:data.index(0)+3+data[data.index(0)+3:].index(0)].decode("utf-8")
+        self.translated_keyword = data[data.index(0)+3+data[data.index(0)+3:].index(0)+1:data.index(0)+3+data[data.index(0)+3:].index(0)+1+data[data.index(0)+3+data[data.index(0)+3:].index(0)+1:].index(0)].decode("utf-8")
+        self.text = data[data.index(0)+3+data[data.index(0)+3:].index(0)+1+data[data.index(0)+3+data[data.index(0)+3:].index(0)+1:].index(0)+1:].decode("utf-8")
+
+    def __str__(self):
+        return f"- Keyword: {self.keyword}\n- Compression flag: {self.compression_flag}\n- Compression method: {self.compression_method}\n- Language tag: {self.language_tag}\n- Translated keyword: {self.translated_keyword}\n- Text: \n{self.text}"
+
+    def __repr__(self):
+        return self.__str__()
