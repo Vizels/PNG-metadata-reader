@@ -4,7 +4,7 @@ import math
 import colorsys
 import numpy as np
 import matplotlib.pyplot as plt
-from png import chunks
+import pngtools.png.chunks as chunks
 
 class PNG:
     def __init__(self, file):
@@ -83,7 +83,8 @@ class PNG:
                 image.write(chunk.data)
                 image.write(chunk.crc)
     
-    def _calculateCRC(self, name, data):
+    @classmethod
+    def _calculateCRC(cls, name, data):
         new_crc = zlib.crc32(name.encode()+data)
         return new_crc.to_bytes(4, byteorder="big")
     
